@@ -50,9 +50,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (_currentTool == DrawingTool.Line ||
-            _currentTool == DrawingTool.Rectangle ||
-            _currentTool == DrawingTool.Ellipse)
+        if (_currentTool != DrawingTool.Point)
         {
             _dragStart = position;
             drawingCanvas.CaptureMouse();

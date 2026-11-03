@@ -15,8 +15,9 @@
 
 ## Labs
 
-| Lab | Description | Status |
-|-----|-------------|--------|
-| Lab 1 | Modular Windows Application | Completed |
-| Lab 2 | Graphical Object Editor | Completed |
-| Lab 3 | Coming soon | Planned |
+| Lab   | Description                          | Status    |
+| ----- | ------------------------------------ | --------- |
+| Lab 1 | Modular Windows Application          | ✅ |
+| Lab 2 | Graphical Object Editor              | ✅ |
+| Lab 3 | Graphical User Interface Development | ✅ |
+| Lab 4 | ... | In progress |
