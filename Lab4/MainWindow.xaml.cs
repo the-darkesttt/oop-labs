@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace Lab4;
@@ -40,41 +38,11 @@ public partial class MainWindow : Window
 
     private void OnNotify(object sender, RoutedEventArgs e)
     {
-        Button button = (Button)sender;
-        string toolName = (string)button.Tag;
+        FrameworkElement element = (FrameworkElement)sender;
+        string toolName = (string)element.Tag;
         DrawingTool tool = Enum.Parse<DrawingTool>(toolName);
 
         SelectTool(tool);
-    }
-
-    private void Point_Click(object sender, RoutedEventArgs e)
-    {
-        SelectTool(DrawingTool.Point);
-    }
-
-    private void Line_Click(object sender, RoutedEventArgs e)
-    {
-        SelectTool(DrawingTool.Line);
-    }
-
-    private void Rectangle_Click(object sender, RoutedEventArgs e)
-    {
-        SelectTool(DrawingTool.Rectangle);
-    }
-
-    private void Ellipse_Click(object sender, RoutedEventArgs e)
-    {
-        SelectTool(DrawingTool.Ellipse);
-    }
-
-    private void LineWithCircles_Click(object sender, RoutedEventArgs e)
-    {
-        SelectTool(DrawingTool.LineWithCircles);
-    }
-
-    private void Cube_Click(object sender, RoutedEventArgs e)
-    {
-        SelectTool(DrawingTool.Cube);
     }
 
     private void DrawingCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

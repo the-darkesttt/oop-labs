@@ -1,6 +1,5 @@
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Lab4.Models;
@@ -20,7 +19,6 @@ internal class PointShape : Shape
         {
             Width = diameter,
             Height = diameter,
-            Fill = isPreview ? Brushes.Blue : Brushes.Black
         };
 
         Canvas.SetLeft(dot, Start.X - diameter / 2);
