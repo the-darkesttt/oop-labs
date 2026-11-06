@@ -20,4 +20,5 @@
 | Lab 1 | Modular Windows Application          | ✅ |
 | Lab 2 | Graphical Object Editor              | ✅ |
 | Lab 3 | Graphical User Interface Development | ✅ |
-| Lab 4 | ... | In progress |
+| Lab 4 | Refactor Graphical Object Editor | ✅ |
+| Lab 5 | ... | In progress |
