@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace Lab4;
 
@@ -8,6 +9,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        DrawToolbarIcons();
         App.Editor.AttachCanvas(drawingCanvas);
         SelectTool(DrawingTool.Point);
         UpdateShapeCount();
@@ -43,6 +45,38 @@ public partial class MainWindow : Window
         DrawingTool tool = Enum.Parse<DrawingTool>(toolName);
 
         SelectTool(tool);
+    }
+
+    // масив кортежів (tuple)
+    private void DrawToolbarIcons()
+    {
+        var icons = new (Canvas canvas, DrawingTool tool, Point start, Point end)[]
+        {
+        (pointIconCanvas, DrawingTool.Point,
+            new Point(20, 16), new Point(20, 16)),
+
+        (lineIconCanvas, DrawingTool.Line,
+            new Point(6, 24), new Point(34, 8)),
+
+        (rectangleIconCanvas, DrawingTool.Rectangle,
+            new Point(8, 8), new Point(32, 24)),
+
+        (ellipseIconCanvas, DrawingTool.Ellipse,
+            new Point(20, 16), new Point(32, 24)),
+
+        (lineWithCirclesIconCanvas, DrawingTool.LineWithCircles,
+            new Point(11, 16), new Point(29, 16)),
+
+        (cubeIconCanvas, DrawingTool.Cube,
+            new Point(8, 12), new Point(26, 30))
+        };
+
+        foreach (var (canvas, tool, start, end) in icons)
+        {
+            canvas.Children.Add(
+                ShapeFactory.Create(tool, start, end).Show(false)
+            );
+        }
     }
 
     private void DrawingCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -58,47 +58,119 @@
                          Background="#EAE5FA"
                          Padding="8,5">
 
-                        <Button Content="● Крапка"
-                                Width="110"
-                                Height="35"
-                                ToolTip="Малювати крапку"
+                        <Button Width="95"
+                                Height="40"
                                 Tag="Point"
-                                Click="OnNotify"/>
+                                ToolTip="Малювати крапку"
+                                Click="OnNotify">
 
-                        <Button Content=" / Лінія"
-                                Width="110"
-                                Height="35"
-                                ToolTip="Малювати лінію"
+                                <StackPanel Orientation="Horizontal">
+                                        <Canvas x:Name="pointIconCanvas"
+                                                Width="40"
+                                                Height="32"
+                                                ClipToBounds="True"
+                                                IsHitTestVisible="False"/>
+
+                                        <TextBlock Text="Крапка"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                </StackPanel>
+                        </Button>
+
+                        <Button Width="90"
+                                Height="40"
                                 Tag="Line"
-                                Click="OnNotify"/>
+                                ToolTip="Малювати лінію"
+                                Click="OnNotify">
 
-                        <Button Content="▭ Прямокутник"
-                                Width="150"
-                                Height="35"
-                                ToolTip="Малювати прямокутник"
+                                <StackPanel Orientation="Horizontal">
+                                        <Canvas x:Name="lineIconCanvas"
+                                                Width="40"
+                                                Height="32"
+                                                ClipToBounds="True"
+                                                IsHitTestVisible="False"/>
+
+                                        <TextBlock Text="Лінія"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                </StackPanel>
+                        </Button>
+
+                        <Button Width="140"
+                                Height="40"
                                 Tag="Rectangle"
-                                Click="OnNotify"/>
+                                ToolTip="Малювати прямокутник"
+                                Click="OnNotify">
 
-                        <Button Content="○ Еліпс"
-                                Width="110"
-                                Height="35"
-                                ToolTip="Малювати еліпс"
+                                <StackPanel Orientation="Horizontal">
+                                        <Canvas x:Name="rectangleIconCanvas"
+                                                Width="40"
+                                                Height="32"
+                                                ClipToBounds="True"
+                                                IsHitTestVisible="False"/>
+
+                                        <TextBlock Text="Прямокутник"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                </StackPanel>
+                        </Button>
+
+                        <Button Width="95"
+                                Height="40"
                                 Tag="Ellipse"
-                                Click="OnNotify"/>
+                                ToolTip="Малювати еліпс"
+                                Click="OnNotify">
 
-                        <Button Content="◯─◯"
-                                Width="80"
-                                Height="35"
+                                <StackPanel Orientation="Horizontal">
+                                        <Canvas x:Name="ellipseIconCanvas"
+                                                Width="40"
+                                                Height="32"
+                                                ClipToBounds="True"
+                                                IsHitTestVisible="False"/>
+
+                                        <TextBlock Text="Еліпс"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                </StackPanel>
+                        </Button>
+
+                        <Button Width="180"
+                                Height="40"
                                 Tag="LineWithCircles"
                                 ToolTip="Малювати лінію з кружечками"
-                                Click="OnNotify"/>
+                                Click="OnNotify">
 
-                        <Button Content="▱ Куб"
-                                Width="100"
-                                Height="35"
+                                <StackPanel Orientation="Horizontal">
+                                        <Canvas x:Name="lineWithCirclesIconCanvas"
+                                                Width="40"
+                                                Height="32"
+                                                ClipToBounds="True"
+                                                IsHitTestVisible="False"/>
+
+                                        <TextBlock Text="Лінія з кружечками"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                </StackPanel>
+                        </Button>
+
+                        <Button Width="135"
+                                Height="40"
                                 Tag="Cube"
                                 ToolTip="Малювати каркас куба"
-                                Click="OnNotify"/>
+                                Click="OnNotify">
+
+                                <StackPanel Orientation="Horizontal">
+                                        <Canvas x:Name="cubeIconCanvas"
+                                                Width="40"
+                                                Height="32"
+                                                ClipToBounds="True"
+                                                IsHitTestVisible="False"/>
+
+                                        <TextBlock Text="Каркас куба"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                </StackPanel>
+                        </Button>
 
                 </ToolBar>
 
