@@ -1,0 +1,32 @@
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
+
+namespace Lab5.Models;
+
+internal class LineShape : Shape
+{
+    public LineShape(Point start, Point end) : base(start, end)
+    {
+    }
+
+    public override UIElement CreateVisual(bool isPreview)
+    {
+        var line = new Line
+        {
+            X1 = Start.X,
+            Y1 = Start.Y,
+            X2 = End.X,
+            Y2 = End.Y,
+
+            Stroke = isPreview ? Brushes.Blue : Brushes.Black,
+            StrokeThickness = 2,
+
+            StrokeDashArray = isPreview ? new DoubleCollection { 4, 3 } : null,
+
+            IsHitTestVisible = false
+        };
+
+        return line;
+    }
+}
