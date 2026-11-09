@@ -30,7 +30,7 @@ public partial class MainWindow : Window
 
     private void SelectTool(DrawingTool tool)
     {
-        App.Editor.SelectTool(tool);
+        MyEditor.Instance.SelectTool(tool);
 
         pointMenuItem.IsChecked =
             tool == DrawingTool.Point;

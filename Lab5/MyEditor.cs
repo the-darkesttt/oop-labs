@@ -110,10 +110,7 @@ internal sealed class MyEditor
 
         Canvas canvas = GetCanvas();
 
-        if (_previewShape != null)
-        {
-            canvas.Children.Remove(_previewShape);
-        }
+        RemovePreview();
 
         Shape shape = ShapeFactory.Create(
             _currentTool,
@@ -135,11 +132,7 @@ internal sealed class MyEditor
 
         Canvas canvas = GetCanvas();
 
-        if (_previewShape != null)
-        {
-            canvas.Children.Remove(_previewShape);
-            _previewShape = null;
-        }
+        RemovePreview();
 
         if ((position - start).Length >= 2)
         {
@@ -187,11 +180,7 @@ internal sealed class MyEditor
     {
         Canvas canvas = GetCanvas();
 
-        if (_previewShape != null)
-        {
-            canvas.Children.Remove(_previewShape);
-            _previewShape = null;
-        }
+        RemovePreview();
 
         _dragStart = null;
 
@@ -199,6 +188,17 @@ internal sealed class MyEditor
         {
             canvas.ReleaseMouseCapture();
         }
+    }
+
+    private void RemovePreview()
+    {
+        if (_previewShape == null)
+        {
+            return;
+        }
+
+        GetCanvas().Children.Remove(_previewShape);
+        _previewShape = null;
     }
 
     internal List<FigureData> GetFigureData()

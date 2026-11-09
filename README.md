@@ -21,4 +21,5 @@
 | Lab 2 | Graphical Object Editor              | ✅ |
 | Lab 3 | Graphical User Interface Development | ✅ |
 | Lab 4 | Refactor Graphical Object Editor | ✅ |
-| Lab 5 | ... | In progress |
+| Lab 5 | Multi-Window Graphical Object Editor | ✅ |
+| Lab 6 | ... | In Progress |
