@@ -7,5 +7,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
+  <ItemGroup>
+      <Compile Include="..\Shared\PipeCommandServer.cs"
+              Link="Shared\PipeCommandServer.cs" />
+      <Compile Include="..\Shared\MatrixSettings.cs"
+                  Link="Shared\MatrixSettings.cs" />              
+  </ItemGroup>
 </Project>

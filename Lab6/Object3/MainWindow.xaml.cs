@@ -1,22 +1,25 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Runtime.InteropServices;
 using System.Numerics;
-using System.IO;
-using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
+using Lab6.Shared;
 
 namespace Object3;
 
 public partial class MainWindow : Window
 {
-    private readonly CancellationTokenSource _stopListening = new();
+    private readonly PipeCommandServer _server;
     public MainWindow()
     {
         InitializeComponent();
-        _ = ListenAsync();
-        Closed += (_, _) => _stopListening.Cancel();
+
+        _server = new PipeCommandServer(
+            this,
+            "Lab6_Object3",
+            HandleSpecificCommandAsync
+        );
+
+        _ = _server.ListenAsync();
+        Closed += (_, _) => _server.Stop();
     }
 
     private static int[,] TextToMatrix(string text)
@@ -28,7 +31,7 @@ public partial class MainWindow : Window
 
         if (lines.Length == 0 ||
             !int.TryParse(lines[0], out int n) ||
-            n <= 0 ||
+            n < 1 || n > MatrixSettings.MaxMatrixSize ||
             lines.Length != (long)n + 1)
         {
             throw new FormatException("Некоректний розмір матриці.");
@@ -107,85 +110,8 @@ public partial class MainWindow : Window
         matrixText.Text = text.ToString();
     }
 
-    private async Task ListenAsync()
+    private async Task<string> HandleSpecificCommandAsync(string command)
     {
-        try
-        {
-            while (!_stopListening.IsCancellationRequested)
-            {
-                using var pipe = new NamedPipeServerStream(
-                    "Lab6_Object3",
-                    PipeDirection.InOut,
-                    1,
-                    PipeTransmissionMode.Byte,
-                    PipeOptions.Asynchronous
-                );
-
-                await pipe.WaitForConnectionAsync(_stopListening.Token);
-
-                using var reader = new StreamReader(pipe);
-                using var writer = new StreamWriter(pipe)
-                {
-                    AutoFlush = true
-                };
-
-                string? command = await reader.ReadLineAsync(_stopListening.Token);
-
-                if (command == "QUIT")
-                {
-                    await writer.WriteLineAsync("BYE");
-                    _ = Dispatcher.BeginInvoke(new Action(Close));
-                    return;
-                }
-
-                string response = await ProcessCommandAsync(command);
-                await writer.WriteLineAsync(response);
-            }
-        }
-        catch (OperationCanceledException)
-        {
-            // Очікування завершено під час закриття програми
-        }
-        catch (IOException ex)
-        {
-            MessageBox.Show($"Помилка каналу: {ex.Message}");
-        }
-    }
-
-    private async Task<string> ProcessCommandAsync(string? command)
-    {
-        if (command == "PING")
-        {
-            return "PONG";
-        }
-
-        if (command != null && command.StartsWith("MOVE|"))
-        {
-            string[] values = command.Split('|');
-
-            if (values.Length != 5 ||
-                !int.TryParse(values[1], out int x) ||
-                !int.TryParse(values[2], out int y) ||
-                !int.TryParse(values[3], out int width) ||
-                !int.TryParse(values[4], out int height) ||
-                width <= 0 || height <= 0)
-            {
-                return "ERROR:POSITION";
-            }
-
-            await Dispatcher.InvokeAsync(() =>
-            {
-                WindowState = WindowState.Normal;
-
-                Left = x;
-                Top = y;
-                Width = width;
-                Height = height;
-            });
-
-            return "OK";
-        }
-
         if (command != "CALCULATE")
         {
             return "UNKNOWN_COMMAND";

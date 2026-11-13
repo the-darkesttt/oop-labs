@@ -1,27 +1,28 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.IO;
-using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
+using Lab6.Shared;
 
 namespace Object2;
 
 public partial class MainWindow : Window
 {
-    private int[,]? _matrix;
-    private readonly CancellationTokenSource _stopListening = new();
+    private readonly PipeCommandServer _server;
 
     public MainWindow()
     {
         InitializeComponent();
 
-        _ = ListenAsync();
-        Closed += (_, _) => _stopListening.Cancel();
+        _server = new PipeCommandServer(
+            this,
+            "Lab6_Object2",
+            HandleSpecificCommandAsync
+        );
+
+        _ = _server.ListenAsync();
+        Closed += (_, _) => _server.Stop();
     }
 
     private static int[,] CreateMatrix(int n, int min, int max)
@@ -101,17 +102,17 @@ public partial class MainWindow : Window
 
     public bool GenerateAndShow(int n, int min, int max)
     {
-        if (n <= 0 || min > max)
+        if (n < 1 || n > MatrixSettings.MaxMatrixSize || min > max)
         {
             throw new ArgumentException("Некоректні параметри матриці.");
         }
 
-        _matrix = CreateMatrix(n, min, max);
-        DisplayMatrix(_matrix);
+        int[,] matrix = CreateMatrix(n, min, max);
+        DisplayMatrix(matrix);
 
         try
         {
-            Clipboard.SetText(MatrixToText(_matrix));
+            Clipboard.SetText(MatrixToText(matrix));
         }
         catch (ExternalException)
         {
@@ -126,90 +127,8 @@ public partial class MainWindow : Window
         return true;
     }
 
-    private async Task ListenAsync()
+    private async Task<string> HandleSpecificCommandAsync(string command)
     {
-        try
-        {
-            while (!_stopListening.IsCancellationRequested)
-            {
-                using var pipe = new NamedPipeServerStream(
-                    "Lab6_Object2",
-                    PipeDirection.InOut,
-                    1,
-                    PipeTransmissionMode.Byte,
-                    PipeOptions.Asynchronous
-                );
-
-                await pipe.WaitForConnectionAsync(_stopListening.Token);
-
-                using var reader = new StreamReader(pipe);
-                using var writer = new StreamWriter(pipe)
-                {
-                    AutoFlush = true
-                };
-
-                string? command = await reader.ReadLineAsync(_stopListening.Token);
-
-                if (command == "QUIT")
-                {
-                    await writer.WriteLineAsync("BYE");
-                    _ = Dispatcher.BeginInvoke(new Action(Close));
-                    return;
-                }
-
-                string response = await ProcessCommandAsync(command);
-                await writer.WriteLineAsync(response);
-            }
-        }
-        catch (OperationCanceledException)
-        {
-            // очікування скасовано під час закриття програми
-        }
-        catch (IOException ex)
-        {
-            MessageBox.Show($"Помилка каналу: {ex.Message}");
-        }
-    }
-
-    private async Task<string> ProcessCommandAsync(string? command)
-    {
-        if (command == "PING")
-        {
-            return "PONG";
-        }
-
-        if (command == null)
-        {
-            return "ERROR:EMPTY_COMMAND";
-        }
-
-        if (command.StartsWith("MOVE|"))
-        {
-            string[] values = command.Split('|');
-
-            if (values.Length != 5 ||
-                !int.TryParse(values[1], out int x) ||
-                !int.TryParse(values[2], out int y) ||
-                !int.TryParse(values[3], out int width) ||
-                !int.TryParse(values[4], out int height) ||
-                width <= 0 || height <= 0)
-            {
-                return "ERROR:POSITION";
-            }
-
-            await Dispatcher.InvokeAsync(() =>
-            {
-                WindowState = WindowState.Normal;
-
-                Left = x;
-                Top = y;
-                Width = width;
-                Height = height;
-            });
-
-            return "OK";
-        }
-
         string[] parts = command.Split('|');
 
         if (parts[0] != "GENERATE")
@@ -221,7 +140,7 @@ public partial class MainWindow : Window
             !int.TryParse(parts[1], out int n) ||
             !int.TryParse(parts[2], out int min) ||
             !int.TryParse(parts[3], out int max) ||
-            n <= 0 || min > max)
+            n < 1 || n > MatrixSettings.MaxMatrixSize || min > max)
         {
             return "ERROR:PARAMETERS";
         }

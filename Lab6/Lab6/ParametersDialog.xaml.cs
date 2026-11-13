@@ -1,4 +1,5 @@
 using System.Windows;
+using Lab6.Shared;
 
 namespace Lab6;
 
@@ -23,9 +24,17 @@ public partial class ParametersDialog : Window
             return;
         }
 
-        if (n <= 0 || min > max)
+        if (n < 1 || n > MatrixSettings.MaxMatrixSize)
         {
-            MessageBox.Show("Перевірте розмір матриці та діапазон.");
+            MessageBox.Show(
+                $"Розмір матриці має бути від 1 до {MatrixSettings.MaxMatrixSize}."
+            );
+            return;
+        }
+
+        if (min > max)
+        {
+            MessageBox.Show("Мінімальне значення не може перевищувати максимальне.");
             return;
         }
 
