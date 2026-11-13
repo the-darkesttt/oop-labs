@@ -22,4 +22,4 @@
 | Lab 3 | Graphical User Interface Development | ✅ |
 | Lab 4 | Refactor Graphical Object Editor | ✅ |
 | Lab 5 | Multi-Window Graphical Object Editor | ✅ |
-| Lab 6 | ... | In Progress |
+| Lab 6 | Message-Driven Multi-Process System | ✅ |

@@ -1,0 +1,50 @@
+<Window x:Class="Lab6.ParametersDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Параметри матриці"
+        Height="270"
+        Width="340"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#F8F6FF">
+
+    <StackPanel Margin="20">
+
+        <TextBlock Text="Розмір матриці (n):"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="nBox"
+                 Text="3"
+                 Margin="0,0,0,12"/>
+
+        <TextBlock Text="Мінімальне значення (Min):"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="minBox"
+                 Text="-5"
+                 Margin="0,0,0,12"/>
+
+        <TextBlock Text="Максимальне значення (Max):"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="maxBox"
+                 Text="5"
+                 Margin="0,0,0,15"/>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+
+            <Button Content="Виконати"
+                    Width="90"
+                    Margin="0,0,10,0"
+                    IsDefault="True"
+                    Click="Confirm_Click"/>
+
+            <Button Content="Скасувати"
+                    Width="90"
+                    IsCancel="True"/>
+
+        </StackPanel>
+
+    </StackPanel>
+</Window>
